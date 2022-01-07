@@ -24,24 +24,24 @@
 </template>
 
 <script setup>
- import {onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import axios from "axios"
 
-      const Patients = ref(null)
+    const Patients = ref(null)
 
-      const getPatients = () => {
-        axios.get("http://consultation.test/api/patients")
-        .then((reponse) => {
-              Patients.value = reponse.data
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-      }
-
-      onMounted(() => {
-        getPatients()
+    const getPatients = () => {
+      axios.get("patients")
+      .then((reponse) => {
+            Patients.value = reponse.data
       })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+
+    onMounted(() => {
+      getPatients()
+    })
 </script>
 
 <style scoped>

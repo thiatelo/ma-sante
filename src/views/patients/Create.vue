@@ -16,7 +16,7 @@
 
           <div class="col-span-2 flex justify-end items-center space-x-4 py-5">
             <button type="button" :disabled="currentIndex <= 1" @click="prevForm" class="btn btn-neutral">Prev</button>
-            <button type="submit" class="btn btn-submit">Submit</button>
+            <button type="button" @click="submitCurrentForm" class="btn btn-submit">Submit</button>
             <button type="button" :disabled="currentIndex === lastIndex" @click="nextForm" class="btn btn-neutral">Next</button>
             <button type="button" class="btn btn-danger">Terminer</button>
           </div>
@@ -34,8 +34,11 @@ import CreateAntecedent from "../../components/CreateAntecedent.vue";
 import CreateAntecedentFamilial from "../../components/CreateAntecedentFamilial.vue";
 import CreateTraitement from "../../components/CreateTraitement.vue";
 import CreateBilan from "../../components/CreateBilan.vue";
+import emitter from 'tiny-emitter/instance'
+import {usePatientId} from "../../hooks/usePatientId";
 
 const currentForm = ref('patient')
+const { patient_id } = usePatientId()
 
 const forms = [
   {
@@ -44,27 +47,27 @@ const forms = [
     value: 'Ajouter un patient',
   },
   {
-    active: true,
+    active: false,
     key: 'consultation',
     value: 'Ajouter une fiche de consultation',
   },
   {
-    active: true,
+    active: false,
     key: 'antecedent',
     value: 'Ajouter un antécedent',
   },
   {
-    active: true,
+    active: false,
     key: 'antecedent_familial',
     value: 'Ajouter un antécedent familial',
   },
   {
-    active: true,
+    active: false,
     key: 'traitement',
     value: 'Ajouter un tratement',
   },
   {
-    active: true,
+    active: false,
     key: 'bilan',
     value: 'Ajouter un bilan',
   },
@@ -75,6 +78,22 @@ const prevIndex = ref(-1)
 const nextIndex = ref(1)
 const lastIndex = ref(forms.length - 1)
 
+emitter.on('patient-is-created', () => {
+  patientIsCreated()
+})
+
+const submitCurrentForm = () => {
+  emitter.emit('submit-subFrom', forms[currentIndex.value].key)
+}
+
+const patientIsCreated = () => {
+
+  forms.forEach((form) => {
+    form.active = form.key !== 'patient';
+  })
+
+  changeFrom(forms[1], currentIndex.value + 1)
+}
 
 const changeFrom = (form, index) => {
   if (form.active){

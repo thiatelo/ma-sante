@@ -33,7 +33,7 @@
       </div>
       <div class="flex flex-col space-y-1">
         <label for="matrimonial">Situation matrimoniale</label>
-        <select v-model="form.matrimonial" id="matrimonial">
+        <select v-model="form.statut_matrimonial" id="matrimonial">
           <option v-for="(option, index) in ['marié(e)', 'célibataire', 'divorcé(e)', 'veuf(ve)']" :key="index" class="capitalize" :value="option">{{option}}</option>
         </select>
       </div>
@@ -44,20 +44,42 @@
 
 import Select from "./Select.vue";
 import Input from "./Input.vue";
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
+import axios from "axios";
+import {usePatientId} from "../hooks/usePatientId"
+import emitter from 'tiny-emitter/instance'
+
+const patient = ref(null)
+const { patient_id } = usePatientId()
 
 const form = reactive({
-  nom: '',
-  prenom: '',
-  sexe: '',
-  telephone: '',
-  email: '',
-  matrimonial: '',
-  adresse: '',
-  date_de_naissance: '',
+  nom: "",
+  prenom: "",
+  date_de_naissance: "",
+  sexe: "",
+  statut_matrimonial: "",
+  adresse: "",
+  telephone: "",
+  email: "",
 })
 
+emitter.on('submit-subFrom', (form) => {
+  if (form === 'patient'){
+    submit()
+  }
+})
 
+const submit = () => {
+  axios.post('patients', form)
+    .then((res) => {
+      patient.value = res.data
+      patient_id.value = patient.value.id
+      emitter.emit('patient-is-created')
 
+    })
+    .catch((err) => {
+      console.log(err.response.data.errors)
+    })
+}
 
 </script>
