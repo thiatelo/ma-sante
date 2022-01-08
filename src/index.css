@@ -25,3 +25,17 @@
 .btn-danger {
     @apply bg-red-500 hover:bg-red-600 text-white
 }
+
+
+textarea,
+select,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="date"],
+input[type="email"],
+input[type="month"],
+input[type="time"],
+input[type="week"] {
+    @apply border-2 border-gray-600/60 bg-transparent text-gray-800/60 p-2 outline-none hover:border-blue-600 focus:border-blue-600 rounded;
+}
