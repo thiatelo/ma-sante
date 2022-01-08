@@ -6,7 +6,7 @@
     </div>
     
     <div class="grid grid-cols-2 gap-10">
-      <div class="h-[40vh] bg-white shadow-md rounded-md"></div>
+      <div class="h-[40vh] bg-white shadow-md rounded-md"> </div>
       <div class="h-[40vh] bg-white shadow-md rounded-md"></div>
       <div class="h-[40vh] bg-white shadow-md rounded-md"></div>
       <div class="h-[40vh] bg-white shadow-md rounded-md"></div>
