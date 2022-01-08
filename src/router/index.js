@@ -14,7 +14,8 @@ const routes = [
     {
         path: '/show/:id',
         name: 'ShowPatient',
-        component: Show
+        component: Show,
+        props: true
     },
     {
         path: '/create',

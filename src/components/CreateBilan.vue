@@ -7,7 +7,7 @@
       </div>
       <div class="flex flex-col space-y-1">
         <label for="resultat">Resultat</label>
-        <input type="text" id="resultat" v-model="form.resultat" placeholder="Entrez le resultat"/>
+        <input type="text" id="resultat" v-model="form.resultats" placeholder="Entrez le resultat"/>
       </div>
 
       <div class="flex flex-col space-y-1">
@@ -33,7 +33,7 @@ const {patient_id} = usePatientId()
 
 const form = reactive({
   type: "",
-  resultat: "",
+  resultats: "",
   date: "",
   description: ""
  
@@ -47,7 +47,7 @@ emitter.on('submit-subFrom', (form) => {
 
 function resetForm() {
   form.type = ''
-  form.resultat = ''
+  form.resultats = ''
   form.date = ''
   form.description = ''
   
