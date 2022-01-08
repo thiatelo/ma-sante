@@ -3,20 +3,20 @@
     <div class="grid grid-cols-2 gap-8 py-5 mb-10">
       <div class="flex flex-col space-y-1">
         <label for="diagnostic">Diagnostic</label>
-        <input type="text" name="diagnostic" id="diagnostic" v-model="form.Diagnostic" placeholder="Entrez le nom de patient"/>
+        <input type="text" name="diagnostic" id="diagnostic" v-model="form.Diagnostic" placeholder="Entrez le diagnostic"/>
       </div>
       <div class="flex flex-col space-y-1">
         <label for="examen">Examen</label>
-        <input type="text" id="examen" v-model="form.examen" placeholder="Entrez le prenom de patient"/>
+        <input type="text" id="examen" v-model="form.examen" placeholder="Entrez l'examen"/>
       </div>
 
       <div class="flex flex-col space-y-1">
         <label for="traitement">Traitement</label>
-        <input type="text" v-model="form.traitement" id="traitement" placeholder="Entrez le telephone du patient"/>
+        <input type="text" v-model="form.traitement" id="traitement" placeholder="Entrez le traitement du patient"/>
       </div>
       <div class="flex flex-col space-y-1">
         <label for="date">Date</label>
-        <input type="date" v-model="form.date" id="date" placeholder="Entrez la date de naissance du patient"/>
+        <input type="date" v-model="form.date" id="date" placeholder="Entrez la date de consultation"/>
       </div>
       <div class="flex flex-col space-y-1">
         <label for="bilan">Bilan Demandé</label>

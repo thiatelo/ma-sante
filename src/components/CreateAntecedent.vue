@@ -3,11 +3,11 @@
     <div class="grid grid-cols-2 gap-8 py-5 mb-10">
       <div class="flex flex-col space-y-1">
         <label for="nom">Nom de l'antécedent</label>
-        <input type="text" name="nom" id="nom" v-model="form.nom" placeholder="Entrez le nom de patient"/>
+        <input type="text" name="nom" id="nom" v-model="form.nom" placeholder="Entrez le nom de l'antecedent"/>
       </div>
       <div class="flex flex-col space-y-1">
         <label for="satuts">Statut de l'antécedant</label>
-        <input type="text" id="satuts" v-model="form.satuts" placeholder="Entrez le prenom de patient"/>
+        <input type="text" id="satuts" v-model="form.satuts" placeholder="Entrez le statut"/>
       </div>
     </div>
   </form>
