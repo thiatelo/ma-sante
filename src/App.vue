@@ -25,25 +25,18 @@
 import Search from "./components/Search.vue";
 import {ref, onMounted} from "vue";
 import axios from "axios";
-import {usePatients} from "./hooks/usePatients";
+import { patientFunctions } from "./Mixins/patient";
 
 const search = ref(false)
-const {patients} = usePatients()
+
+const {getPatients} = patientFunctions()
 
 
 const closeSearch = () => {
   search.value = false
 }
 
-const getPatients = () => {
-  axios.get("patients")
-      .then((reponse) => {
-        patients.value = reponse.data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-}
+
 
 onMounted(() => {
   getPatients()

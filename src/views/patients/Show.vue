@@ -2,7 +2,7 @@
   <div class="h-full space-y-5">
     <div class="flex justify-end items-center bg-white py-3 px-5 space-x-5 shadow-md rounded-md">
       <button @click="editPatient" class="py-2 px-5 bg-blue-500 hover:bg-blue-600 rounded-md text-white transition-all duration-300">Modifier</button>
-      <router-link to="/edit/1" class="py-2 px-5 bg-red-500 hover:bg-red-600 rounded-md text-white transition-all duration-300">Suppromer</router-link>
+      <button @click="delPatient(patient.id)" class="py-2 px-5 bg-red-500 hover:bg-red-600 rounded-md text-white transition-all duration-300">Supprimer</button>
     </div>
     
     <div v-if="patient" class="grid grid-cols-2 gap-10">
@@ -28,7 +28,19 @@
             <span class="text-gray-600">Sexe:</span>
             <span class="text-stale-800">{{patient.sexe}}</span>
           </div>
+            <div class="flex justify-start space-x-2 items-center">
+            <span class="text-gray-600">Email:</span>
+            <span class="text-stale-800">{{patient.email}}</span>
+          </div>
         </div>
+          <div class="flex justify-start space-x-2 items-center">
+            <span class="text-gray-600">Adresse:</span>
+            <span class="text-stale-800">{{patient.adresse}}</span>
+          </div>
+            <div class="flex justify-start space-x-2 items-center">
+            <span class="text-gray-600">Matrimonial:</span>
+            <span class="text-stale-800">{{patient.statut_matrimonial}}</span>
+          </div>
       </div>
       <div v-if="patient.consultations.length > 0" class="p-5 bg-white shadow-md rounded-md">
         <div class="text-right pb-3">
@@ -77,7 +89,7 @@
           <h4 class="text-sm text-slate-600 font-bold">Antécedants Familliaux</h4>
         </div>
         <div class="grid grid-cols-2 gap-5 h-[20vh] overflow-y-auto text-sm p-5">
-          <div @click="editAntecedent(antecedent)" v-for="(antecedent, index) in patient.antecedent_familliaux" :key="index" class="p-5 shadow-md shadow-gray-500 cursor-pointer">
+          <div @click="editAntecedentFamilliaux(antecedent)" v-for="(antecedent, index) in patient.antecedent_familliaux" :key="index" class="p-5 shadow-md shadow-gray-500 cursor-pointer">
             <div class="flex justify-start space-x-2 items-center">
               <span class="text-gray-600">Nom:</span>
               <span class="text-stale-800">{{antecedent.nom}}</span>
@@ -119,7 +131,7 @@
           <h4 class="text-sm text-slate-600 font-bold">Traitements</h4>
         </div>
         <div class="grid grid-cols-2 gap-5 h-[20vh] overflow-y-auto text-sm p-5">
-          <div @click="editBilan(traitement)" v-for="(traitement, index) in patient.traitements" :key="index" class="p-5 shadow-md shadow-gray-500 cursor-pointer">
+          <div @click="editTritement(traitement)" v-for="(traitement, index) in patient.traitements" :key="index" class="p-5 shadow-md shadow-gray-500 cursor-pointer">
             <div class="flex justify-start space-x-2 items-center">
               <span class="text-gray-600">Type:</span>
               <span class="text-stale-800">{{traitement.type}}</span>
@@ -139,6 +151,10 @@
   </div>
 
   <EditConsultation v-if="showEditConsultation" @close="closeEditConsultation" :consultation="consultationToEdit" />
+  <EditAntecedent v-if="showEditAntecedent" @close="closeEditAntecedent" :antecedent="antecedentToEdit" />
+  <EditAntecedentFamilliaux v-if="showEditAntecedentFamilliaux" @close="closeEditAntecedentFamilliaux" :antecedentfamilliaux="antecedentfamilliauxToEdit" />
+  <EditBilan v-if="showEditBilan" @close="closeEditBilan" :bilan="bilanToEdit" />
+  <EditPatient v-if="showEditPatient" @close="closeEditPatient" :patient="patient" />
 </template>
 
 <script setup>
@@ -146,14 +162,34 @@
 import {onMounted, ref} from "vue";
 import axios from "axios";
 import EditConsultation from "../../components/Edit/EditConsultation.vue";
+import EditAntecedent from "../../components/Edit/EditAntecedent.vue";
+import EditAntecedentFamilliaux from "../../components/Edit/EditAntecedentFamilliaux.vue";
+import EditBilan from "../../components/Edit/EditBilan.vue";
+import EditPatient from "../../components/Edit/EditPatient.vue";
+import DelPatient from "../../components/Supprimer/DelPatient.vue";
+import router from "../../router";
+import { patientFunctions } from "../../Mixins/patient"
+
 
 const props = defineProps({
   id: String,
 })
 
+const {getPatients} = patientFunctions()
+
 const patient = ref(null)
 const showEditConsultation = ref(false)
 const consultationToEdit = ref(null)
+
+const showEditAntecedent = ref(false)
+const antecedentToEdit = ref(null)
+
+const showEditAntecedentFamilliaux = ref(false)
+const antecedentfamilliauxToEdit = ref(null)
+
+const showEditBilan = ref(false)
+const bilanToEdit = ref(null)
+
 
 const showEditPatient = ref(false)
 
@@ -172,9 +208,46 @@ const editConsultation = (consultation) => {
   showEditConsultation.value = true
 }
 
+const closeEditAntecedent = () => {
+  showEditAntecedent.value = false
+  getPatient()
+}
+
+const editAntecedent = (antecedent) => {
+  antecedentToEdit.value = antecedent
+  showEditAntecedent.value = true
+}
+
+const closeEditAntecedentFamilliaux = () => {
+  showEditAntecedentFamilliaux.value = false
+  getPatient()
+}
+
+const editAntecedentFamilliaux = (antecedentfamilliaux) => {
+  antecedentfamilliauxToEdit.value = antecedentfamilliaux
+  showEditAntecedentFamilliaux.value = true
+}
+
+
+const closeEditBilan = () => {
+  showEditBilan.value = false
+  getPatient()
+}
+
+const editBilan = (bilan) => {
+  bilanToEdit.value = bilan
+  showEditBilan.value = true
+}
+
+const closeEditPatient = () => {
+  showEditPatient.value = false
+  getPatient()
+}
+
 const editPatient = () => {
   showEditPatient.value = true
 }
+
 
 function getPatient() {
   axios.get(`patients/${props.id}`)
@@ -189,5 +262,21 @@ function getPatient() {
 onMounted(() => {
   getPatient()
 })
+
+
+
+function delPatient() {
+  axios.delete(`patients/${props.id}`)
+      .then((res) => {
+        
+        getPatients()
+        router.push({name:"Home"})
+      })
+      .catch((err) => {
+        console.log(err.response.data)
+      })
+}
+
+ 
 
 </script>

@@ -28,7 +28,7 @@
       <div class="flex flex-col space-y-1">
         <label for="sexe">Le sexe du patient</label>
         <select v-model="form.sexe" id="sexe">
-          <option v-for="(option, index) in ['masculin', 'feminin', 'transgenre']" :key="index" class="capitalize" :value="option">{{option}}</option>
+          <option v-for="(option, index) in ['masculin', 'feminin', ]" :key="index" class="capitalize" :value="option">{{option}}</option>
         </select>
       </div>
       <div class="flex flex-col space-y-1">
